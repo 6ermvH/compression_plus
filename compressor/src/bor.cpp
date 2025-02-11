@@ -1,6 +1,8 @@
 #include "bor.hpp"
+#include "bit_writer.hpp"
 
 #include <stdexcept>
+#include <fstream>
 
 Tbor::Tbor(const std::unordered_map<char, std::size_t>& letters) {
 
@@ -64,11 +66,7 @@ void Tbor::delete_node(Node* current) {
   delete current;
 }
 
-std::map<char, std::vector<bool> > Tbor::data() {
-  return keyChars_;
-}
-
-std::vector<bool> Tbor::get_preambule() {
+std::vector<bool> Tbor::get_preambule() const {
   std::vector<bool> result;
   std::queue<Node*> q;
   q.push(root_);
@@ -91,7 +89,7 @@ std::vector<bool> Tbor::get_preambule() {
   return result;
 }
 
-std::vector<char> Tbor::get_alphabet() {
+std::vector<char> Tbor::get_alphabet() const {
   std::vector<char> result;
   std::queue<Node*> q;
   q.push(root_);
@@ -109,4 +107,25 @@ std::vector<char> Tbor::get_alphabet() {
     }
   }
   return result;
+}
+
+#include <iostream>
+
+std::ofstream& operator<<(std::ofstream& ofs, const Tbor& bor) {
+  {
+    std::vector<char> alphabet = bor.get_alphabet();
+    std::cout << '\n';
+    std::size_t size = alphabet.size();
+    ofs.write(reinterpret_cast<const char*>(&size), sizeof(int));
+    ofs.write(reinterpret_cast<const char*>(alphabet.data()), alphabet.size());
+  }
+  {
+    BitWriter bw;
+    bw.write(bor.get_preambule());
+    const char* data = reinterpret_cast<const char*>(bw.data());
+    std::size_t size = bw.size();
+    ofs.write(reinterpret_cast<const char*>(&size), sizeof(int));
+    ofs.write(data, bw.size());
+  }
+  return ofs;
 }

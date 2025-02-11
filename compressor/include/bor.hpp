@@ -28,10 +28,20 @@ class Tbor {
     Tbor& operator=(const Tbor&) = delete;
 
     Tbor(const std::string& text);
-    std::vector<bool> get_preambule();
-    std::vector<char> get_alphabet();
-    std::map<char, std::vector<bool> > data();
+    std::vector<bool> get_preambule() const;
+    std::vector<char> get_alphabet() const;
+    /*std::map<char, std::vector<bool> > data();*/
     ~Tbor();
+  
+    const std::vector<bool> operator[](const char& key) const {
+      auto it = keyChars_.find(key);
+      if (it != keyChars_.end()) {
+          return it->second;
+      }
+      return std::vector<bool>();
+    }
+
+    friend std::ofstream& operator<<(std::ofstream& ofs, const Tbor& bor);
 
   private:
     

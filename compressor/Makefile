@@ -5,7 +5,7 @@ TEST := test
 TARGET := main
 OBJDIR := obj
 
-OBJECTS := $(OBJDIR)/bit_writer.o $(OBJDIR)/bor.o
+OBJECTS := $(OBJDIR)/bit_writer.o $(OBJDIR)/bor.o $(OBJDIR)/compressor.o
 
 all: $(TARGET)
 
