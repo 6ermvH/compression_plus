@@ -1,6 +1,6 @@
 # Compression Plus
 
-Simple data compression project.
+Huff code compression
 
 ## Project Structure
 
@@ -21,4 +21,9 @@ compression_plus/
 ```bash
 cd compressor
 make
-./compressor compress input_file output_file
+./main input_file output_file
+
+./test // for tests
+
+go run redundancy_analysis.go // for get .csv
+```
